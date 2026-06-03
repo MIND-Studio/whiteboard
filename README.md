@@ -1,0 +1,62 @@
+# mind-whiteboard-v1
+
+> Privacy-first collaborative whiteboard — **draw** in the browser, **share** a link, **live-collaborate**. Your board lives in your Solid Pod.
+
+See [`docs/PRD.md`](docs/PRD.md) for the full plan, architecture, and decision log. Agents: read [`AGENTS.md`](AGENTS.md) before editing.
+
+**Status:** M0–M5 built and verified end-to-end. **W1 (draw+persist)** ✅ and **W2 (share)** ✅ pass live; **W3 (live collaborate)** is ⚠️ partial — viewing a shared board + live cursors work, but friend-side *interactive editing* has an open bug. See [`docs/KNOWN-ISSUES.md`](docs/KNOWN-ISSUES.md) (WB-1) for root cause + fix location before relying on two-way live editing.
+
+## The three wishes
+
+1. **Draw** — freehand, shapes, text on an infinite canvas; auto-saved to your pod. ✅
+2. **Share** — one link, sent to a friend, carries everything they need. ✅
+3. **Live collaborate** — both draw at once, with live cursors and no lag. ⚠️ *cursors + read-only sync work; friend-side editing: see [`docs/KNOWN-ISSUES.md`](docs/KNOWN-ISSUES.md).*
+
+## Stack at a glance
+
+- **Canvas:** Excalidraw (MIT) · **Sync:** Yjs CRDT · **Transport:** `y-websocket` relay (ephemeral)
+- **Durable copy:** debounced, E2E-encrypted snapshots to the owner's pod
+- **Identity/UI:** `@mind-studio/core` (`MindLoginCard`) + `@mind-studio/ui` (Mind brand, amber accent)
+- **Pod host:** CommunitySolidServer v7
+- **Ports:** app `:3110` · local CSS `:3111` · relay `:3112`
+
+The pod is the source of truth; the relay is a dumb, disposable pipe. See the PRD §3 for why.
+
+## Develop
+
+```bash
+# Install. @mind-studio/* lives on GitHub Packages and needs a token:
+NODE_AUTH_TOKEN="$(gh auth token)" npm install
+
+# Run the app (Next.js, :3110)
+npm run dev
+
+# Run the ephemeral relay (:3112) — needed for live collaboration
+npm run relay
+
+# Seed demo personas (alice/bob) into the pods — idempotent
+npm run seed:demo
+
+# Production build (NEXT_PUBLIC_* is inlined at build time — set env first)
+npm run build
+```
+
+For local live collaboration, run **both** `npm run dev` and `npm run relay`.
+
+### Configuration
+
+Copy `.env.example` to `.env.local` and adjust. All config flows through `src/lib/config.ts`:
+
+| Var | Default | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_SOLID_ISSUER` | `https://pod.mindpods.org/` | OIDC issuer for pod sign-in (prod pod → silent SSO across siblings; point at `http://localhost:3111/` for fully-local dev) |
+| `NEXT_PUBLIC_RELAY_URL` | `ws://localhost:3112` | Ephemeral `y-websocket` relay |
+| `NEXT_PUBLIC_WHITEBOARD_NAMESPACE` | `mind-whiteboard` | Pod namespace; boards live under `<pod>/<namespace>/boards/` |
+
+`NEXT_PUBLIC_*` values are baked in when the dev server starts — restart and hard-reload tabs after changing them.
+
+## Notes
+
+- This is a **sibling** prototype in `mind-prototypes/` — independent app, own ports and data. The family's ports collide by design; run one prototype at a time (or override with `npm run dev -- --port NNNN`).
+- `@mind-studio/core` is consumed from the registry (`^0.1.1`), like every deployed sibling, so the prod image builds (a `file:` tarball can't be reached inside the Docker build context). See [`AGENTS.md`](AGENTS.md) hard-rule 1 and [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the deploy story and the other hard-won constraints.
+- **Deploying?** [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) is the plan to ship to `whiteboard.mindpods.org` (+ the relay at `whiteboard-relay.mindpods.org`). Part A (standalone output, Dockerfiles, CI) is done in-repo; infra/DNS/deploy are the remaining steps.

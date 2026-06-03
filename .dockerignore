@@ -1,0 +1,20 @@
+# Keep the build context lean and — critically — keep local-dev env files OUT.
+# .env.local points at localhost CSS + ws://localhost relay; if it reached the
+# builder it would override the prod NEXT_PUBLIC_* build-args (real env > .env
+# files only for the shell, but .env.local would still load), baking localhost
+# URLs into the image. The image's config comes ONLY from build-args.
+node_modules
+.next
+out
+.git
+.env
+.env*.local
+.css-data
+.indexer-data
+.cache
+.screenshots
+.playwright-mcp
+.test-fixtures
+*.log
+*.png
+tsconfig.tsbuildinfo

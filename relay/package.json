@@ -1,0 +1,21 @@
+{
+  "name": "mind-whiteboard-relay",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ephemeral y-websocket room broker for mind-whiteboard. No persistence, no pod credentials.",
+  "scripts": {
+    "start": "tsx server.ts",
+    "dev": "tsx watch server.ts"
+  },
+  "dependencies": {
+    "lib0": "^0.2.117",
+    "ws": "^8.18.0",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.20"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.22.3"
+  }
+}

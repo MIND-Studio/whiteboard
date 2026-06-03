@@ -1,0 +1,39 @@
+{
+  "name": "mind-whiteboard-v1",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3110",
+    "build": "next build",
+    "start": "next start -p 3110",
+    "relay": "tsx relay/server.ts",
+    "seed:demo": "tsx scripts/seed-demo.ts"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.0",
+    "@inrupt/solid-client": "^3.0.0",
+    "@inrupt/solid-client-authn-browser": "^4.0.0",
+    "@inrupt/solid-client-authn-node": "^3.1.0",
+    "@mind-studio/core": "^0.1.1",
+    "@mind-studio/ui": "^0.1.0",
+    "lucide-react": "^0.460.0",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "y-indexeddb": "^9.0.12",
+    "y-protocols": "^1.0.6",
+    "y-websocket": "^3.0.0",
+    "yjs": "^13.6.20"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/ws": "^8.5.13",
+    "tailwindcss": "^4",
+    "tsx": "^4.22.3",
+    "typescript": "^5",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Mind design system. Direct path (not the "@mind-studio/ui/styles.css"
+   exports subpath) so Tailwind v4's CSS @import resolver finds the file on
+   disk under node_modules. */
+@import "../../node_modules/@mind-studio/ui/dist/styles.css";
+
+/* Generate utilities for the class names used inside the @mind-studio/ui
+   components (Button, Dialog, Tabs, …). */
+@source "../../node_modules/@mind-studio/ui/dist";
+
+/*
+ * mind-whiteboard uses the shared @mind-studio/ui design system on the default
+ * Mind brand (set via data-mind-theme="mind" on <html>; see layout.tsx). All
+ * colors, radius, fonts, and dark mode come from @mind-studio/ui tokens.
+ *
+ * MindLoginCard imports its own login-card.css, so the sign-in card needs no
+ * extra @source here.
+ */
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--mind-font-sans);
+  min-height: 100vh;
+}
