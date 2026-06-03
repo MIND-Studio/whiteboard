@@ -6,13 +6,13 @@ Status of the three wishes after the M0–M5 build + end-to-end verification (20
 |---|---|
 | **W1 — Draw + auto-save to pod** | ✅ Verified live (signed-in alice on local CSS: drew shapes → encrypted `.bin` `PUT` 201 to `…/alice/mind-whiteboard/boards/<id>.bin`, with `.meta.ttl`). |
 | **W2 — Share** | ✅ Verified live (public-link tier: `setBoardPublicAccess` on the real drawn `.bin` → anonymous `GET` 200 → decrypt with the `#k=` fragment key → decoded the owner's exact elements). |
-| **W3 — Live collaborate** | ⚠️ **Partial — see WB-1 below.** Opening a shared board, seeing the drawing, and bidirectional live cursors/presence all work. Friend-side *interactive editing* is broken. |
+| **W3 — Live collaborate** | ✅ **Fixed in v0.1.1 — see WB-1 below.** Opening a shared board, seeing the drawing, bidirectional live cursors/presence, and friend-side interactive editing all work. |
 
 ---
 
-## WB-1 — Friend-side interactive editing crashes Excalidraw hit-test (W3) — OPEN
+## WB-1 — Friend-side interactive editing crashed Excalidraw hit-test (W3) — FIXED (v0.1.1)
 
-**Severity:** high for W3 (live two-way editing); does not affect W1/W2 or read-only viewing of a shared board.
+**Severity:** was high for W3 (live two-way editing); never affected W1/W2 or read-only viewing of a shared board.
 
 **Symptom.** When a friend opens a share link (a second, non-logged-in browser context):
 - ✅ the board renders — the friend sees all of the owner's shapes (decrypt + seed via `fetchDecryptedSnapshot` → `seedDocFromUpdate` works), and
@@ -28,7 +28,11 @@ Status of the three wishes after the M0–M5 build + end-to-end verification (20
 
 Why earlier verification missed it: W3 was first "verified" with a **raw two-`Y.Doc` relay test** that exercised `Y.Map` propagation directly and **bypassed Excalidraw's element reconstruction**, so it never built a real `ExcalidrawElement` from synced state. The bug only appears in the actual two-tab browser flow.
 
-**Fix (localized, known).** In `excalidraw-bridge.ts`, when materializing elements from the `Y.Map` for `updateScene`, run them through Excalidraw's **`restoreElements()`** first — it fills every required field with the correct defaults (the crash is hit-testing reading e.g. `backgroundColor`/array fields that are `undefined` on a partial element). Don't pass raw reconstructed objects to `updateScene`. Validate against Excalidraw 0.18's API (`node_modules/@excalidraw/excalidraw`). Then re-run the two-tab interactive test below.
+**Fix (shipped, v0.1.1).** `excalidraw-bridge.ts` runs every element materialized from the `Y.Map` through Excalidraw 0.18's **`restoreElements()`** before `updateScene`, which backfills every required field with the correct defaults (the crash was hit-testing reading e.g. `backgroundColor`/array fields that were `undefined` on a partial element).
+
+The restorer is `value`-imported lazily (a static import drags the browser-only bundle into the module graph and throws `window is not defined` during SSR — see the module header comment), so there is a brief window before the dynamic import resolves. The **root defect** was that, during that window, the bridge still painted the **raw, un-normalized** elements to the canvas as a stopgap and only re-painted normalized once the import resolved. A friend opening a share link usually has the pointer already resting over a shape, so that first raw paint hit-tested a malformed element and threw repeatedly — the "25× TypeError" symptom. The fix enforces a hard invariant in `applyFromYMap`: **never hand Excalidraw an un-normalized element.** If `restoreElements` hasn't resolved yet, the paint is *deferred* (a `pendingPaint` flag), not done raw; the import's `.then` callback runs the deferred paint the instant it's ready. In practice the import is already cached (Canvas.tsx dynamic-imports the same package to mount Excalidraw), so the deferral is sub-millisecond.
+
+**Verification status.** Type-checks + production build are green. The two-tab interactive browser repro below was **not** re-run in the deploy environment (no Playwright there); the fix is reasoned from the documented crash mechanism + the Excalidraw 0.18 `restoreElements` source. Re-run the repro locally to close it out fully.
 
 **Repro / acceptance test.**
 1. Start stack: `docker compose up -d` (CSS :3111), `npm run relay` (:3112), `npm run dev` (:3110). Seed: `npm run seed:demo`.

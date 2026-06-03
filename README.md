@@ -4,13 +4,13 @@
 
 See [`docs/PRD.md`](docs/PRD.md) for the full plan, architecture, and decision log. Agents: read [`AGENTS.md`](AGENTS.md) before editing.
 
-**Status:** M0–M5 built and verified end-to-end. **W1 (draw+persist)** ✅ and **W2 (share)** ✅ pass live; **W3 (live collaborate)** is ⚠️ partial — viewing a shared board + live cursors work, but friend-side *interactive editing* has an open bug. See [`docs/KNOWN-ISSUES.md`](docs/KNOWN-ISSUES.md) (WB-1) for root cause + fix location before relying on two-way live editing.
+**Status:** M0–M5 built and verified end-to-end. **W1 (draw+persist)** ✅ and **W2 (share)** ✅ pass live; **W3 (live collaborate)** ✅ — viewing a shared board, live cursors, and friend-side *interactive editing* all work as of v0.1.1 (the WB-1 hit-test crash is fixed). See [`docs/KNOWN-ISSUES.md`](docs/KNOWN-ISSUES.md) (WB-1) for the root cause + fix; re-run the two-tab repro locally to fully close it out.
 
 ## The three wishes
 
 1. **Draw** — freehand, shapes, text on an infinite canvas; auto-saved to your pod. ✅
 2. **Share** — one link, sent to a friend, carries everything they need. ✅
-3. **Live collaborate** — both draw at once, with live cursors and no lag. ⚠️ *cursors + read-only sync work; friend-side editing: see [`docs/KNOWN-ISSUES.md`](docs/KNOWN-ISSUES.md).*
+3. **Live collaborate** — both draw at once, with live cursors and no lag. ✅ *cursors, read-only sync, and friend-side editing all work as of v0.1.1 (WB-1 fixed).*
 
 ## Stack at a glance
 

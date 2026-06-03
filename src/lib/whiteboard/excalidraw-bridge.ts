@@ -102,14 +102,18 @@ export function bindExcalidrawToDoc(
   // decide whether an incoming change is newer than what we already have.
   const seenVersion = new Map<string, number>();
 
-  // `restoreElements`, once its dynamic import resolves. Until then, an early
-  // paint falls back to the raw elements (and re-paints once the restorer is
-  // ready), so we never block the first render on the import.
+  // `restoreElements`, once its dynamic import resolves. Until then we DEFER
+  // painting rather than fall back to raw elements (see applyFromYMap's
+  // invariant — a partial element crashes Excalidraw's hit-tester). `pendingPaint`
+  // records that a paint was requested while the restorer was still loading, so
+  // we can run it the instant the import resolves. In practice the import is
+  // already cached by the time the bridge binds (Canvas.tsx dynamic-imports the
+  // same package to mount Excalidraw), so this window is sub-millisecond.
   let restoreElements: RestoreElementsFn | null = null;
   let pendingPaint = false;
   void loadRestoreElements().then((fn) => {
     restoreElements = fn;
-    // If a paint happened before the restorer loaded, redo it now normalized.
+    // Run the paint that was deferred while the restorer was still loading.
     if (pendingPaint) {
       pendingPaint = false;
       applyFromYMap();
@@ -162,6 +166,21 @@ export function bindExcalidrawToDoc(
   // --- Y.Map → canvas -------------------------------------------------------
 
   function applyFromYMap() {
+    // INVARIANT (WB-1): never hand Excalidraw an un-normalized element. A peer-
+    // or snapshot-reconstructed element can be missing fields the local
+    // Excalidraw version requires; the hit-tester then throws the instant the
+    // pointer is over it (`TypeError: Cannot read properties of undefined
+    // (reading 'length')` — e.g. isTransparent reading an undefined
+    // backgroundColor). So if the restorer hasn't resolved yet, DEFER the whole
+    // paint — never paint raw as a stopgap. A friend opening a share link
+    // typically has the pointer already resting over a shape, so the very first
+    // paint would hit-test a malformed element and throw repeatedly. The
+    // loadRestoreElements() callback re-invokes applyFromYMap once ready.
+    if (!restoreElements) {
+      pendingPaint = true;
+      return;
+    }
+
     // Rebuild the full element set from the Y.Map. Excalidraw's updateScene
     // expects the complete elements array; it diffs internally.
     const merged: ExcalidrawElement[] = [];
@@ -172,17 +191,13 @@ export function bindExcalidrawToDoc(
     }
 
     // Normalize peer-reconstructed elements so Excalidraw's renderer + hit-test
-    // never see a missing required field (e.g. undefined backgroundColor →
-    // isTransparent crash on hover). If the restorer hasn't loaded yet, paint
-    // the raw elements now and re-paint normalized once it resolves.
-    let elements: readonly ExcalidrawElement[] = merged;
-    if (restoreElements) {
-      // localElements = current canvas elements, so restore can preserve any
-      // local-only ordering/version info while backfilling defaults.
-      elements = restoreElements(merged, api.getSceneElementsIncludingDeleted());
-    } else if (merged.length > 0) {
-      pendingPaint = true;
-    }
+    // never see a missing required field. localElements = current canvas
+    // elements, so restore can preserve any local-only ordering/version info
+    // while backfilling defaults.
+    const elements = restoreElements(
+      merged,
+      api.getSceneElementsIncludingDeleted(),
+    );
 
     api.updateScene({
       elements,
