@@ -1,4 +1,4 @@
-# AGENTS.md — mind-whiteboard-v1
+# AGENTS.md — whiteboard
 
 Orientation rules for agents working in this prototype. **Read this before editing any file here.**
 
@@ -8,7 +8,7 @@ This is a privacy-first **collaborative whiteboard** built on Solid Pods: draw o
 
 The full plan, architecture, and decision log live in [`docs/PRD.md`](docs/PRD.md) — read it for the *why* behind the stack choices (Excalidraw over tldraw, Yjs, ephemeral relay, owner-client snapshots).
 
-The grandparent `/Users/heussers/develop/mind/CLAUDE.md` describes Mind Cube (a Raspberry Pi AI assistant). It is **not** relevant to anything here.
+The grandparent workspace `CLAUDE.md` describes Mind Cube (a Raspberry Pi AI assistant). It is **not** relevant to anything here.
 
 ## NOT the Next.js you know
 

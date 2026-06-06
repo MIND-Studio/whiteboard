@@ -1,10 +1,10 @@
-# Deploying mind-whiteboard to `whiteboard.mindpods.org`
+# Deploying whiteboard to `whiteboard.mindpods.org`
 
-Plan to take `mind-whiteboard-v1` from a dev-only prototype to a shipped app in the
-[`mindpods-infra`](../../mindpods-infra) fleet, alongside dock / drive / builder /
+Plan to take `whiteboard` from a dev-only prototype to a shipped app in the
+[`mindpods-infra`](https://github.com/MIND-Studio/mindpods-infra) fleet, alongside dock / drive / builder /
 codespaces. The app half mirrors what those four already do — copy from
 `mind-drive-v0` (Dockerfile + `release.yml`) and follow
-[`mindpods-infra/docs/APP-DOCKERFILE.md`](../../mindpods-infra/docs/APP-DOCKERFILE.md).
+[`mindpods-infra/docs/APP-DOCKERFILE.md`](https://github.com/MIND-Studio/mindpods-infra/blob/main/docs/APP-DOCKERFILE.md).
 
 **What makes whiteboard different from every sibling: it ships TWO containers.**
 The Next.js app *and* an ephemeral `y-websocket` **relay**. The relay is a second
@@ -81,7 +81,7 @@ Real decisions, not mechanics — settle these first.
 
 ---
 
-## Part A — Productionize the app repo (`mind-whiteboard-v1`) — ✅ DONE
+## Part A — Productionize the app repo (`whiteboard`) — ✅ DONE
 
 All committed in this repo; each was built and smoke-tested locally.
 
@@ -155,7 +155,7 @@ and `relay`) and prints **two** digests:
 ### A6. Build + verify locally, then tag
 
 ```bash
-cd mind-whiteboard-v1
+cd whiteboard
 npx tsc --noEmit
 NODE_AUTH_TOKEN=$(gh auth token) npm run build      # confirm .next/standalone/server.js
 
@@ -329,7 +329,7 @@ Then the real tests:
 Whiteboard has no baked room, so seeding is only for a scripted demo (alice/bob):
 
 ```bash
-cd mind-whiteboard-v1
+cd whiteboard
 cp .env.example .env.local        # set issuer = https://pod.mindpods.org/ + persona creds
 npm run seed:demo                 # idempotent; provisions demo personas
 ```

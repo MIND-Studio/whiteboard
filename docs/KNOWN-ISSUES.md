@@ -1,4 +1,4 @@
-# Known issues — `mind-whiteboard-v1`
+# Known issues — `whiteboard`
 
 Status of the three wishes after the M0–M5 build + end-to-end verification (2026-06-02/03).
 

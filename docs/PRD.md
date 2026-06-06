@@ -1,4 +1,4 @@
-# PRD — `mind-whiteboard-v1`
+# PRD — `whiteboard`
 
 **A privacy-first collaborative whiteboard. Draw in the browser, share a link, live-collaborate — your board lives in your pod.**
 
@@ -28,7 +28,7 @@ If a build decision does not make one of W1/W2/W3 demonstrably better, it is def
 
 The `mind-prototypes` family explores *privacy-first apps where the user owns the data in their Solid Pod*. A whiteboard is a sharp test of that thesis because real-time collaboration is exactly where "user-owned data" usually breaks down — most whiteboards (Figma, Miro, even Excalidraw's hosted version) put the durable document on the vendor's servers.
 
-`mind-whiteboard-v1` keeps the **durable, canonical board in the owner's pod** while making the **live editing session fast** via an ephemeral relay that never persists anything. The pod is the source of truth; the relay is a dumb, disposable pipe. This is the same "division of labour" the Solid+CRDT community (m-ld) converged on, and it lets us honor the Mind invariant *without* a laggy whiteboard.
+`whiteboard` keeps the **durable, canonical board in the owner's pod** while making the **live editing session fast** via an ephemeral relay that never persists anything. The pod is the source of truth; the relay is a dumb, disposable pipe. This is the same "division of labour" the Solid+CRDT community (m-ld) converged on, and it lets us honor the Mind invariant *without* a laggy whiteboard.
 
 It also reuses the family's shared identity layer: one `MindLoginCard`, one default OIDC issuer (`pod.mindpods.org`), so a friend who is already signed into another Mind app joins via silent SSO.
 
@@ -189,7 +189,7 @@ export default { transpilePackages: ["@mind-studio/core"] };
 ## 9. Proposed layout (mirrors `mind-drive-v0`)
 
 ```
-mind-whiteboard-v1/
+whiteboard/
 ├── package.json            # next 16.2.6, react 19.2.4, excalidraw, yjs, y-websocket, y-indexeddb, inrupt SDKs, @mind-studio/*
 ├── next.config.ts          # transpilePackages: ["@mind-studio/core"]
 ├── tsconfig.json           # strict, @/* alias

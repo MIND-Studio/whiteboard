@@ -1,4 +1,4 @@
-# mind-whiteboard-v1
+# whiteboard
 
 > Privacy-first collaborative whiteboard — **draw** in the browser, **share** a link, **live-collaborate**. Your board lives in your Solid Pod.
 
