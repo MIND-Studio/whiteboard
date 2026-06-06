@@ -36,7 +36,7 @@ The restorer is `value`-imported lazily (a static import drags the browser-only 
 
 **Repro / acceptance test.**
 1. Start stack: `docker compose up -d` (CSS :3111), `npm run relay` (:3112), `npm run dev` (:3110). Seed: `npm run seed:demo`.
-2. **Fresh incognito** context, sign in as seeded local **alice** with issuer `http://localhost:3111/` (a stale `pod.mindpods.org` cookie in a non-incognito context will silently auth against prod — see N-1).
+2. **Fresh incognito** context, sign in as seeded local **alice** with issuer `http://localhost:3111/` (a stale `pods.mindpods.org` cookie in a non-incognito context will silently auth against prod — see N-1).
 3. Use **in-app navigation only** (click "New board") — not a hard `goto` (see N-2). Draw a couple shapes.
 4. Share → Create public link → open the link in a **second** context (no login).
 5. Friend hovers/draws over the synced shapes → today: 25× the TypeError above; friend can't draw. After the fix: no crash, friend draws, friend→owner sync lands.
@@ -45,6 +45,6 @@ The restorer is `value`-imported lazily (a static import drags the browser-only 
 
 ## Notes (NOT bugs — by-design, documented to prevent re-investigation)
 
-**N-1 — Sign-in can hit the prod pod from a shared/non-incognito browser.** `src/lib/config.ts` keeps `https://pod.mindpods.org/` as the *fallback* default issuer; `.env.local` overrides it to `http://localhost:3111/` and the app correctly uses the local value. But if the browser already holds a `pod.mindpods.org` session cookie, the OIDC provider auto-completes against **prod** before the local issuer takes effect. For local verification always use a **fresh incognito** context. Not a code defect.
+**N-1 — Sign-in can hit the prod pod from a shared/non-incognito browser.** `src/lib/config.ts` keeps `https://pods.mindpods.org/` as the *fallback* default issuer; `.env.local` overrides it to `http://localhost:3111/` and the app correctly uses the local value. But if the browser already holds a `pods.mindpods.org` session cookie, the OIDC provider auto-completes against **prod** before the local issuer takes effect. For local verification always use a **fresh incognito** context. Not a code defect.
 
 **N-2 — OIDC session is in-memory; survives SPA nav, not a hard page load.** `restorePreviousSession` is deliberately **off** (`src/lib/solid/auth.ts` / `session.ts`) — turning it on caused an infinite `/login/callback ↔ /boards` redirect loop on CSS (same tradeoff ported from `drive`). So the session survives in-app `router.push/replace` navigation but **not** a hard reload / typed URL / deep-link cold load (those land signed-out). This is expected. If hard-nav/deep-link session survival is wanted later, enable `restorePreviousSession: true` on normal page loads **only** (keep it off on the `/login/callback` route to avoid the loop), and verify against CSS before trusting it.

@@ -30,7 +30,7 @@ The `mind-prototypes` family explores *privacy-first apps where the user owns th
 
 `whiteboard` keeps the **durable, canonical board in the owner's pod** while making the **live editing session fast** via an ephemeral relay that never persists anything. The pod is the source of truth; the relay is a dumb, disposable pipe. This is the same "division of labour" the Solid+CRDT community (m-ld) converged on, and it lets us honor the Mind invariant *without* a laggy whiteboard.
 
-It also reuses the family's shared identity layer: one `MindLoginCard`, one default OIDC issuer (`pod.mindpods.org`), so a friend who is already signed into another Mind app joins via silent SSO.
+It also reuses the family's shared identity layer: one `MindLoginCard`, one default OIDC issuer (`pods.mindpods.org`), so a friend who is already signed into another Mind app joins via silent SSO.
 
 ---
 
@@ -104,7 +104,7 @@ https://<app>/board/<boardId>?pod=<encoded-pod-snapshot-URL>#k=<e2e-key>
 ## 5. User flows
 
 **W1 — Draw (solo owner)**
-1. Land on `/` → `MindLoginCard` (accent color reserved for whiteboard; default issuer `pod.mindpods.org`).
+1. Land on `/` → `MindLoginCard` (accent color reserved for whiteboard; default issuer `pods.mindpods.org`).
 2. Sign in → OIDC redirect → `/login/callback` → land on `/board/<newId>`.
 3. New board scaffolds in the pod (`<id>.bin` + `<id>.meta.ttl`); Excalidraw canvas mounts; draw freely.
 4. Edits debounce-save to the pod; a quiet "Saved to your pod" affordance confirms.

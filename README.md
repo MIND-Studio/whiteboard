@@ -49,7 +49,7 @@ Copy `.env.example` to `.env.local` and adjust. All config flows through `src/li
 
 | Var | Default | Purpose |
 |---|---|---|
-| `NEXT_PUBLIC_SOLID_ISSUER` | `https://pod.mindpods.org/` | OIDC issuer for pod sign-in (prod pod → silent SSO across siblings; point at `http://localhost:3111/` for fully-local dev) |
+| `NEXT_PUBLIC_SOLID_ISSUER` | `https://pods.mindpods.org/` | OIDC issuer for pod sign-in (prod pod → silent SSO across siblings; point at `http://localhost:3111/` for fully-local dev) |
 | `NEXT_PUBLIC_RELAY_URL` | `ws://localhost:3112` | Ephemeral `y-websocket` relay |
 | `NEXT_PUBLIC_WHITEBOARD_NAMESPACE` | `mind-whiteboard` | Pod namespace; boards live under `<pod>/<namespace>/boards/` |
 

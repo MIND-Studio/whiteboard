@@ -12,7 +12,7 @@
  * build-time-inlined name can't drift across images (see docs/DEPLOYMENT.md §A2).
  */
 export const oidcIssuer =
-  process.env.NEXT_PUBLIC_SOLID_ISSUER ?? "https://pod.mindpods.org/";
+  process.env.NEXT_PUBLIC_SOLID_ISSUER ?? "https://pods.mindpods.org/";
 
 /** Live-collaboration relay (ephemeral y-websocket). CSS=3111, app=3110, relay=3112. */
 export const relayUrl =

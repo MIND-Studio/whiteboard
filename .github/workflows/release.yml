@@ -78,7 +78,7 @@ jobs:
           cache-from: type=gha,scope=app
           cache-to: type=gha,mode=max,scope=app
           build-args: |
-            NEXT_PUBLIC_SOLID_ISSUER=https://pod.mindpods.org/
+            NEXT_PUBLIC_SOLID_ISSUER=https://pods.mindpods.org/
             NEXT_PUBLIC_RELAY_URL=wss://whiteboard-relay.mindpods.org
             NEXT_PUBLIC_WHITEBOARD_NAMESPACE=mind-whiteboard
           secrets: |

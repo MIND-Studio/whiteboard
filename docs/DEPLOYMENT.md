@@ -24,7 +24,7 @@ mind-whiteboard is a **client-only SPA** (no API routes; all components are
 
 | Endpoint | Who serves it | Carries |
 |---|---|---|
-| `pod.mindpods.org` | CSS (already in the fleet) | OIDC + the durable, **E2E-encrypted** board snapshots (`.bin` + `.meta.ttl`) |
+| `pods.mindpods.org` | CSS (already in the fleet) | OIDC + the durable, **E2E-encrypted** board snapshots (`.bin` + `.meta.ttl`) |
 | `whiteboard.mindpods.org` | this app image (standalone Next on `:3000`) | the SPA itself |
 | `whiteboard-relay.mindpods.org` | **the relay image** (`:3112`) | live Yjs deltas + awareness (cursors) over **WebSocket** |
 
@@ -141,7 +141,7 @@ and `relay`) and prints **two** digests:
 
 - `app` job → `IMAGE_NAME: mind-whiteboard`, build-args:
   ```yaml
-  NEXT_PUBLIC_SOLID_ISSUER=https://pod.mindpods.org/
+  NEXT_PUBLIC_SOLID_ISSUER=https://pods.mindpods.org/
   NEXT_PUBLIC_RELAY_URL=wss://whiteboard-relay.mindpods.org
   NEXT_PUBLIC_WHITEBOARD_NAMESPACE=mind-whiteboard
   ```
@@ -162,7 +162,7 @@ NODE_AUTH_TOKEN=$(gh auth token) npm run build      # confirm .next/standalone/s
 # Optional: reproduce the CI image builds locally
 printf '%s' "$(gh auth token)" > /tmp/tok
 docker build --secret id=node_auth_token,src=/tmp/tok \
-  --build-arg NEXT_PUBLIC_SOLID_ISSUER=https://pod.mindpods.org/ \
+  --build-arg NEXT_PUBLIC_SOLID_ISSUER=https://pods.mindpods.org/ \
   --build-arg NEXT_PUBLIC_RELAY_URL=wss://whiteboard-relay.mindpods.org \
   --build-arg NEXT_PUBLIC_WHITEBOARD_NAMESPACE=mind-whiteboard \
   -t mind-whiteboard:test .
@@ -310,7 +310,7 @@ curl -s https://whiteboard-relay.mindpods.org/health                            
 Then the real tests:
 
 1. **SSO:** sign in at `dock.mindpods.org`, open `whiteboard.mindpods.org` — one
-   consent, no second password (shared OIDC issuer at `pod.mindpods.org`).
+   consent, no second password (shared OIDC issuer at `pods.mindpods.org`).
 2. **W1 draw + persist:** draw on a board → confirm an encrypted `.bin` + `.meta.ttl`
    `PUT` lands under `…/<me>/mind-whiteboard/boards/<id>` on the live pod.
 3. **W2 share:** create a public link, open it in a second (logged-out) browser →
@@ -330,11 +330,11 @@ Whiteboard has no baked room, so seeding is only for a scripted demo (alice/bob)
 
 ```bash
 cd whiteboard
-cp .env.example .env.local        # set issuer = https://pod.mindpods.org/ + persona creds
+cp .env.example .env.local        # set issuer = https://pods.mindpods.org/ + persona creds
 npm run seed:demo                 # idempotent; provisions demo personas
 ```
 
-(Provision the persona accounts on `pod.mindpods.org` first if they don't exist —
+(Provision the persona accounts on `pods.mindpods.org` first if they don't exist —
 via `codespaces.mindpods.org/signup`.)
 
 ---
