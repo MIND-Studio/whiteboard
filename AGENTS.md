@@ -4,7 +4,7 @@ Orientation rules for agents working in this prototype. **Read this before editi
 
 ## Orientation
 
-This is a privacy-first **collaborative whiteboard** built on Solid Pods: draw on an infinite canvas, share a link, live-collaborate. It is a **sibling** of `mind-drive-v0`, `mind-market-v0`, `mind-chat-v0`, `mind-codespaces-v0`, `mind-dock-v0`, and the rest of the `mind-prototypes/` family — independent app, own ports, own data, own docs. Do not unify with sibling prototypes.
+This is a privacy-first **collaborative whiteboard** built on Solid Pods: draw on an infinite canvas, share a link, live-collaborate. It is a **sibling** of `drive`, `mind-market-v0`, `chat`, `codespaces`, `dock`, and the rest of the `mind-prototypes/` family — independent app, own ports, own data, own docs. Do not unify with sibling prototypes.
 
 The full plan, architecture, and decision log live in [`docs/PRD.md`](docs/PRD.md) — read it for the *why* behind the stack choices (Excalidraw over tldraw, Yjs, ephemeral relay, owner-client snapshots).
 

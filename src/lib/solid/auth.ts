@@ -23,7 +23,7 @@ const DEFAULT_RETURN_TO = "/boards";
  * hard refresh (or a deep link without an OIDC code in the URL) lands on the
  * signed-out prompt. We soften that by remembering the attempted path (see
  * `rememberSignedOutPath`) so reconnecting returns there. (Ported verbatim from
- * mind-drive-v0; the loop was re-verified there 2026-06-01.)
+ * drive; the loop was re-verified there 2026-06-01.)
  */
 export function rememberReturnTo(url: string) {
   if (typeof window === "undefined") return;

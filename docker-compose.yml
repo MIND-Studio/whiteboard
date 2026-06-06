@@ -1,4 +1,4 @@
-# mind-whiteboard-v1 — dev compose
+# whiteboard — dev compose
 #
 # Single CommunitySolidServer v7 instance on port 3111 hosting both demo
 # personas (alice and bob). Optional: the default OIDC issuer is the production
@@ -7,8 +7,8 @@
 # to use it.
 #
 # Ports use the 311x band to coexist with sibling prototypes (300x–310x are all
-# taken; 310x is mind-shell-v0):
-#   - mind-whiteboard-v1   311x  ← this stack (3110 app + 3111 CSS, 3112 relay)
+# taken; 310x is shell):
+#   - whiteboard   311x  ← this stack (3110 app + 3111 CSS, 3112 relay)
 #
 # Data persists in ./.css-data (gitignored). The relay (:3112) is a separate
 # ephemeral process started with `npm run relay` — it is NOT in this compose

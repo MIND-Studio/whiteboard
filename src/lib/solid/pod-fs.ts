@@ -18,9 +18,9 @@ import { session, boardsContainerUrl } from "./session";
 
 /**
  * POSIX-shaped wrappers around the Solid LDP HTTP API, ported from
- * mind-drive-v0. The whiteboard's snapshot layer (snapshot.ts, Task #3) and the
+ * drive. The whiteboard's snapshot layer (snapshot.ts, Task #3) and the
  * boards-list UI (Task #4) both call through here. Signatures are deliberately
- * identical to mind-drive-v0/src/lib/solid/pod-fs.ts — whiteboard-eng's
+ * identical to drive/src/lib/solid/pod-fs.ts — whiteboard-eng's
  * snapshot.ts imports writeFileBlob/readFileBlob/writeFileText against this
  * exact contract.
  *

@@ -13,7 +13,7 @@ import { session } from "./session";
  * signal forces a full re-GET — so using them for per-stroke sync is the
  * anti-pattern we avoid.
  *
- * Ported from mind-chat-v0/src/lib/solid/chat-subscription.ts: discover the
+ * Ported from chat/src/lib/solid/chat-subscription.ts: discover the
  * subscription endpoint → POST a JSON-LD subscription with the DPoP-bound fetch →
  * open the returned `receiveFrom` WebSocket → fire onChange on each frame, with a
  * 2-second polling fallback if the WS can't be established or drops.

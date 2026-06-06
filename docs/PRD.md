@@ -6,7 +6,7 @@
 - **Author:** synthesized from 4 research streams (internal prototype patterns, `@mind-studio/ui` + `@mind-studio/core` API surface, web research on whiteboard/CRDT tech, web research on Solid + real-time collaboration)
 - **Date:** 2026-06-02
 - **Sibling of:** the `mind-prototypes/` family (Next.js 16 / React 19 / Solid Pods)
-- **Ports:** app `:3110`, local CSS `:3111` (311x band — 300x–310x are all taken; 310x is `mind-shell-v0`)
+- **Ports:** app `:3110`, local CSS `:3111` (311x band — 300x–310x are all taken; 310x is `shell`)
 
 ---
 
@@ -73,7 +73,7 @@ The research produced one clear, defensible stack. This section is the architect
 ### 3.5 CSS notifications — **wake-up only, not the hot path**
 
 - We subscribe to `WebSocketChannel2023` on `<id>.bin` purely so a **cold or other-device client** (owner's second device; a viewer not in the live relay) learns the pod copy changed and re-fetches.
-- We do **not** route strokes/cursors through CSS notifications. CSS notifications are *change-signals* (Activity Streams 2.0 "this resource changed"), not deltas — every signal forces a full re-GET, and there's no presence concept. Using the pod as a per-stroke message queue is explicitly the anti-pattern the Solid+CRDT community warns against. This reuses the proven discover→POST-subscription→open-WS flow already implemented in `mind-chat-v0/src/lib/solid/chat-subscription.ts`, including its 2s polling fallback.
+- We do **not** route strokes/cursors through CSS notifications. CSS notifications are *change-signals* (Activity Streams 2.0 "this resource changed"), not deltas — every signal forces a full re-GET, and there's no presence concept. Using the pod as a per-stroke message queue is explicitly the anti-pattern the Solid+CRDT community warns against. This reuses the proven discover→POST-subscription→open-WS flow already implemented in `chat/src/lib/solid/chat-subscription.ts`, including its 2s polling fallback.
 
 ---
 
@@ -97,7 +97,7 @@ https://<app>/board/<boardId>?pod=<encoded-pod-snapshot-URL>#k=<e2e-key>
 | **WebID grant** (controlled) | `setAgentAccess(snapshot, friendWebID, { read, write })` | their own pod login (silent SSO if already signed into a Mind app) | named-agent WAC/ACP rule |
 
 - Use the **Inrupt Universal Access API** (`universalAccess.setAgentAccess` / `setPublicAccess`) so the same code works whether CSS serves WAC or ACP. Set access on the `.bin`, the `.meta.ttl`, **and** the containing folder.
-- WebID-grant tier mirrors `mind-chat-v0/src/lib/solid/chat-acl.ts` (re-write the authoritative ACL on every add-member; `acl:Read`+`acl:Append`/`Write`).
+- WebID-grant tier mirrors `chat/src/lib/solid/chat-acl.ts` (re-write the authoritative ACL on every add-member; `acl:Read`+`acl:Append`/`Write`).
 
 ---
 
@@ -124,7 +124,7 @@ https://<app>/board/<boardId>?pod=<encoded-pod-snapshot-URL>#k=<e2e-key>
 ## 6. Scope
 
 ### In scope (v1)
-- Pod sign-in via `MindLoginCard` + the `mind-drive-v0` single-flight redirect guard.
+- Pod sign-in via `MindLoginCard` + the `drive` single-flight redirect guard.
 - Excalidraw canvas: freehand, shapes, arrows, text, select/move/delete, color/stroke controls (Excalidraw built-ins).
 - Yjs ⇄ Excalidraw bridge; `y-websocket` relay; awareness cursors with name+color.
 - Debounced encrypted snapshot persistence to the owner's pod + `.meta.ttl`.
@@ -186,7 +186,7 @@ export default { transpilePackages: ["@mind-studio/core"] };
 
 ---
 
-## 9. Proposed layout (mirrors `mind-drive-v0`)
+## 9. Proposed layout (mirrors `drive`)
 
 ```
 whiteboard/
@@ -213,7 +213,7 @@ whiteboard/
 
 ## 10. Milestones
 
-1. **M0 — Scaffold:** clone `mind-drive-v0` shape, wire `@mind-studio/ui` + `@mind-studio/core`, sign in, blank `/board/[id]`. *(W1 shell)*
+1. **M0 — Scaffold:** clone `drive` shape, wire `@mind-studio/ui` + `@mind-studio/core`, sign in, blank `/board/[id]`. *(W1 shell)*
 2. **M1 — Draw + persist (solo):** Excalidraw mounts; `onChange` → debounced encrypted snapshot to pod; reload restores board. *(W1 ✅)*
 3. **M2 — Live (relay):** Yjs⇄Excalidraw bridge over `y-websocket`; two tabs draw together; awareness cursors. *(W3 mechanics)*
 4. **M3 — Share:** Share dialog, capability URL + fragment key, public + WebID-grant tiers via Universal Access. *(W2 ✅)*

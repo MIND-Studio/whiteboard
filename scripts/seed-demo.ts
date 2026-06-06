@@ -1,5 +1,5 @@
 /**
- * Seed the demo personas for mind-whiteboard-v1.
+ * Seed the demo personas for whiteboard.
  *
  * For each persona (alice, bob) this mints client credentials against the local
  * CSS, ensures the `mind-whiteboard/boards/` container exists, and writes a demo

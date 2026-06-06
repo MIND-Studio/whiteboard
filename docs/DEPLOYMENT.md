@@ -3,7 +3,7 @@
 Plan to take `whiteboard` from a dev-only prototype to a shipped app in the
 [`mindpods-infra`](https://github.com/MIND-Studio/mindpods-infra) fleet, alongside dock / drive / builder /
 codespaces. The app half mirrors what those four already do — copy from
-`mind-drive-v0` (Dockerfile + `release.yml`) and follow
+`drive` (Dockerfile + `release.yml`) and follow
 [`mindpods-infra/docs/APP-DOCKERFILE.md`](https://github.com/MIND-Studio/mindpods-infra/blob/main/docs/APP-DOCKERFILE.md).
 
 **What makes whiteboard different from every sibling: it ships TWO containers.**

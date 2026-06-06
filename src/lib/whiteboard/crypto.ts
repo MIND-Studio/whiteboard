@@ -3,7 +3,7 @@
 /**
  * End-to-end encryption for board snapshots (PRD §3.4, §4).
  *
- * Unlike mind-drive-v0's crypto.ts (passphrase + PBKDF2 + per-file wrapped key),
+ * Unlike drive's crypto.ts (passphrase + PBKDF2 + per-file wrapped key),
  * the whiteboard's *key is the capability*: it travels in the share-link URL
  * fragment (`#k=`). Browsers never send the fragment to a server, so the relay
  * and the pod only ever see ciphertext — possession of the full link is what

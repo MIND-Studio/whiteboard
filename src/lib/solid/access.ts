@@ -15,7 +15,7 @@ import { session, boardBinUrl, boardMetaUrl, boardsContainerUrl } from "./sessio
  * itself. WAC grants don't propagate from a container to its members, so each
  * resource is granted explicitly.
  *
- * Conceptually this mirrors mind-chat-v0's chat-acl "re-write the authoritative
+ * Conceptually this mirrors chat's chat-acl "re-write the authoritative
  * grant on every change" pattern: `setBoardAgentAccess` always writes the
  * desired flags for that agent on all three targets, so calling it again is the
  * idempotent way to add/keep a collaborator (pass `{ read:false, write:false }`
