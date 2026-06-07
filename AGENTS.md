@@ -79,3 +79,11 @@ For live collaboration locally you need **both** `npm run dev` and `npm run rela
 - Routing strokes/cursors through CSS notifications. CSS notifications are wake-up *change-signals*, not a delta/message queue — that's the explicit anti-pattern (PRD §3.5).
 - Swapping in tldraw or any paid/source-available SDK (licensing — PRD §3.1, §11).
 - Touching sibling prototypes — they have their own `AGENTS.md`.
+
+## Commits & releases
+
+Use [Conventional Commits](https://www.conventionalcommits.org) on `main`
+(`fix:` → patch, `feat:` → minor, `feat!:` / `BREAKING CHANGE:` → major). Releases,
+tags, and `CHANGELOG.md` are automated by **release-please** — never tag manually
+or hand-edit `CHANGELOG.md`. To cut a release, merge the open
+"chore(main): release X.Y.Z" PR. See the README's Releases section.

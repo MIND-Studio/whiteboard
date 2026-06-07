@@ -60,3 +60,19 @@ Copy `.env.example` to `.env.local` and adjust. All config flows through `src/li
 - This is a **sibling** prototype in `mind-prototypes/` — independent app, own ports and data. The family's ports collide by design; run one prototype at a time (or override with `npm run dev -- --port NNNN`).
 - `@mind-studio/core` is consumed from the registry (`^0.1.1`), like every deployed sibling, so the prod image builds (a `file:` tarball can't be reached inside the Docker build context). See [`AGENTS.md`](AGENTS.md) hard-rule 1 and [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the deploy story and the other hard-won constraints.
 - **Deploying?** [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) is the plan to ship to `whiteboard.mindpods.org` (+ the relay at `whiteboard-relay.mindpods.org`). Part A (standalone output, Dockerfiles, CI) is done in-repo; infra/DNS/deploy are the remaining steps.
+
+## Releases
+
+Versioning, `CHANGELOG.md`, and tags are automated with
+[release-please](https://github.com/googleapis/release-please) — **don't tag or
+edit `CHANGELOG.md` by hand.**
+
+1. Commit to `main` using [Conventional Commits](https://www.conventionalcommits.org):
+   `fix:` → patch, `feat:` → minor, `feat!:` / `BREAKING CHANGE:` → major.
+   `chore:` / `docs:` / `refactor:` / `test:` don't trigger a release.
+2. release-please keeps an open **"chore(main): release X.Y.Z"** PR that rolls the
+   pending commits into `CHANGELOG.md` and bumps the version.
+3. Merge that PR to release: it creates the `vX.Y.Z` tag + GitHub Release, which
+   fires `release.yml` to build and push the Docker image to GHCR.
+4. Deploying the image to production is a separate, manual GitOps step in
+   [`mindpods-infra`](https://github.com/MIND-Studio/mindpods-infra) (`mind-deploy.sh`).
