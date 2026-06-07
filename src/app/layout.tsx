@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@mind-studio/ui";
 import { mind } from "@mind-studio/ui/themes";
 import "./globals.css";
+import { FeedbackLauncher } from "@/components/FeedbackLauncher";
 
 export const metadata: Metadata = {
   title: "Mind Whiteboard — collaborate, your board in your pod",
@@ -24,6 +25,7 @@ export default function RootLayout({
           storageKey="mind-whiteboard-theme"
         >
           {children}
+          <FeedbackLauncher />
         </ThemeProvider>
       </body>
     </html>

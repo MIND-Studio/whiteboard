@@ -33,6 +33,17 @@ export const APP_NAME = "Whiteboard";
 export const ACCENT = "#d97706";
 
 /**
+ * App-owned feedback inbox (a public-append container the app developer
+ * controls). All feedback — from any user, logged in or not — is POSTed here,
+ * and the dev reads it from this one place. Defaults under the issuer's pod
+ * root; override with `NEXT_PUBLIC_FEEDBACK_INBOX`. See
+ * `@mind-studio/core/feedback`.
+ */
+export const feedbackInbox =
+  process.env.NEXT_PUBLIC_FEEDBACK_INBOX ??
+  `${ensureSlash(oidcIssuer)}alice/whiteboard-feedback/`;
+
+/**
  * Board-path helpers — the single place that knows the on-pod layout. Every
  * board lives as a sibling `.bin` (encrypted Yjs snapshot) + `.meta.ttl`
  * (title/owner/timestamps) under `<podRoot>/<namespace>/boards/`. Callers pass
