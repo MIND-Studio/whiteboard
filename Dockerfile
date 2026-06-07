@@ -20,6 +20,16 @@ RUN --mount=type=secret,id=node_auth_token \
     NODE_AUTH_TOKEN="$(cat /run/secrets/node_auth_token 2>/dev/null || true)" \
     npm ci --no-audit --no-fund
 
+# Guarantee Next's native swc binary. `npm ci` intermittently omits a
+# platform-optional native dep even when it's correctly in the lockfile
+# (npm/cli #4828) — and Next 16's Turbopack has NO WASM fallback, so a missing
+# binary aborts the build ("Turbopack is not supported on this platform"). We
+# force-install the binary matching the build platform's arch + the resolved
+# next version (process.arch is "x64"/"arm64", matching the package names) so the
+# build never depends on npm-ci luck. It's a public package (no GHCR auth), and
+# `--no-save` leaves package.json/lock untouched.
+RUN npm install --no-save "@next/swc-linux-$(node -p process.arch)-gnu@$(node -p "require('next/package.json').version")"
+
 COPY . .
 RUN mkdir -p public
 
