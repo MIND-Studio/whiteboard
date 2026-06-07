@@ -33,6 +33,10 @@ ENV NEXT_PUBLIC_SOLID_ISSUER=$NEXT_PUBLIC_SOLID_ISSUER \
     NEXT_PUBLIC_RELAY_URL=$NEXT_PUBLIC_RELAY_URL \
     NEXT_PUBLIC_WHITEBOARD_NAMESPACE=$NEXT_PUBLIC_WHITEBOARD_NAMESPACE
 
+# App-owned feedback inbox (public-append container). Inlined at build time.
+ARG NEXT_PUBLIC_FEEDBACK_INBOX
+ENV NEXT_PUBLIC_FEEDBACK_INBOX=$NEXT_PUBLIC_FEEDBACK_INBOX
+
 RUN npm run build
 
 # --- Stage 2: runtime ------------------------------------------------------

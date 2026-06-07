@@ -81,6 +81,7 @@ jobs:
             NEXT_PUBLIC_SOLID_ISSUER=https://pods.mindpods.org/
             NEXT_PUBLIC_RELAY_URL=wss://whiteboard-relay.mindpods.org
             NEXT_PUBLIC_WHITEBOARD_NAMESPACE=mind-whiteboard
+            NEXT_PUBLIC_FEEDBACK_INBOX=https://pods.mindpods.org/mind/whiteboard-feedback/
           secrets: |
             node_auth_token=${{ secrets.GITHUB_TOKEN }}
 
