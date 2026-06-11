@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/MIND-Studio/whiteboard/compare/v0.1.4...v0.1.5) (2026-06-11)
+
+
+### Bug Fixes
+
+* correct apps/ relocation paths, tidy env + seed-demo ([9a1a6a0](https://github.com/MIND-Studio/whiteboard/commit/9a1a6a0065ec118275cab7b16188a762804f358a))
+
 ## [0.1.4](https://github.com/MIND-Studio/whiteboard/compare/v0.1.3...v0.1.4) (2026-06-07)
 
 
