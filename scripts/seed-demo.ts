@@ -15,14 +15,14 @@
  * metadata + container + ACL are everything the seed can honestly provide.
  *
  * Usage:
- *   docker compose up -d            # CSS on :3111
+ *   (cd .. && docker compose up -d) # shared Mind CSS on :3011
  *   npm run seed:demo
  *
  * Idempotent — re-running overwrites the same metadata + re-asserts the grant.
  */
 import { Session } from "@inrupt/solid-client-authn-node";
 
-const POD_BASE = process.env.POD_BASE_URL ?? "http://localhost:3111/";
+const POD_BASE = process.env.POD_BASE_URL ?? "http://localhost:3011/";
 const PASSWORD = process.env.SEED_PASSWORD ?? "dev-only-do-not-use-in-prod";
 const NAMESPACE = process.env.NEXT_PUBLIC_WHITEBOARD_NAMESPACE ?? "mind-whiteboard";
 
@@ -37,12 +37,12 @@ type Persona = {
 
 const ALICE: Persona = {
   name: "alice",
-  email: process.env.SEED_EMAIL ?? "alice@mind-whiteboard.local",
+  email: process.env.SEED_EMAIL ?? "alice@mind.local",
   podName: "alice",
 };
 const BOB: Persona = {
   name: "bob",
-  email: "bob@mind-whiteboard.local",
+  email: "bob@mind.local",
   podName: "bob",
 };
 

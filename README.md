@@ -17,14 +17,17 @@ See [`docs/PRD.md`](docs/PRD.md) for the full plan, architecture, and decision l
 - **Canvas:** Excalidraw (MIT) · **Sync:** Yjs CRDT · **Transport:** `y-websocket` relay (ephemeral)
 - **Durable copy:** debounced, E2E-encrypted snapshots to the owner's pod
 - **Identity/UI:** `@mind-studio/core` (`MindLoginCard`) + `@mind-studio/ui` (Mind brand, amber accent)
-- **Pod host:** CommunitySolidServer v7
-- **Ports:** app `:3110` · local CSS `:3111` · relay `:3112`
+- **Pod host:** shared Mind CommunitySolidServer v7 on `:3011` (see [`../../SOLID-SERVER.md`](../../SOLID-SERVER.md))
+- **Ports:** app `:3110` · shared CSS `:3011` · relay `:3112`
 
 The pod is the source of truth; the relay is a dumb, disposable pipe. See the PRD §3 for why.
 
 ## Develop
 
 ```bash
+# Start the shared Mind CSS once (offline cross-app SSO; or skip for prod pod):
+(cd ../.. && docker compose up -d)   # CSS on :3011 — see ../../SOLID-SERVER.md
+
 # Install. @mind-studio/* lives on GitHub Packages and needs a token:
 NODE_AUTH_TOKEN="$(gh auth token)" npm install
 
@@ -49,7 +52,7 @@ Copy `.env.example` to `.env.local` and adjust. All config flows through `src/li
 
 | Var | Default | Purpose |
 |---|---|---|
-| `NEXT_PUBLIC_SOLID_ISSUER` | `https://pods.mindpods.org/` | OIDC issuer for pod sign-in (prod pod → silent SSO across siblings; point at `http://localhost:3111/` for fully-local dev) |
+| `NEXT_PUBLIC_SOLID_ISSUER` | `https://pods.mindpods.org/` | OIDC issuer for pod sign-in (prod pod → silent SSO across siblings; point at `http://localhost:3011/`, the shared Mind CSS, for fully-local dev) |
 | `NEXT_PUBLIC_RELAY_URL` | `ws://localhost:3112` | Ephemeral `y-websocket` relay |
 | `NEXT_PUBLIC_WHITEBOARD_NAMESPACE` | `mind-whiteboard` | Pod namespace; boards live under `<pod>/<namespace>/boards/` |
 
