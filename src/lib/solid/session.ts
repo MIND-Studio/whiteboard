@@ -2,37 +2,34 @@
 
 import { useEffect, useState } from "react";
 import {
-  getDefaultSession,
   login,
   logout,
   type Session,
 } from "@inrupt/solid-client-authn-browser";
-import { APP_NAME, oidcIssuer, boardsRootFor, boardBinUrlFor, boardMetaUrlFor } from "@/lib/config";
+import { APP_NAME, boardsRootFor, boardBinUrlFor, boardMetaUrlFor } from "@/lib/config";
+import { solid, DEFAULT_ISSUER } from "./client";
 import { ensureSession } from "./auth";
 
 /**
- * The browser SDK keeps a process-wide default session. We re-export it as a
- * single helper so call sites never accidentally instantiate a second one
- * (`new Session()`) and end up unauthenticated. All pod I/O (pod-fs, access,
- * notifications) routes its DPoP-bound fetch through here.
+ * Session + issuer memory now live in the shared {@link solid} client (see
+ * `client.ts` and `@mind-studio/core/solid`); these are thin shims that keep the
+ * app's existing import paths stable. The board-path helpers, WebID → pod-root
+ * derivation, and the `useSession` hook below are whiteboard-specific and stay
+ * here.
  */
 export function session(): Session {
-  return getDefaultSession();
+  return solid.session();
 }
 
-const ISSUER_KEY = "mind-whiteboard:oidc-issuer";
-
 /** Default OIDC issuer (config single-source). Re-exported for convenience. */
-export const DEFAULT_ISSUER = oidcIssuer;
+export { DEFAULT_ISSUER };
 
 export function storedIssuer(): string {
-  if (typeof window === "undefined") return DEFAULT_ISSUER;
-  return localStorage.getItem(ISSUER_KEY) ?? DEFAULT_ISSUER;
+  return solid.storedIssuer();
 }
 
 export function rememberIssuer(issuer: string) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(ISSUER_KEY, issuer);
+  solid.rememberIssuer(issuer);
 }
 
 /**
