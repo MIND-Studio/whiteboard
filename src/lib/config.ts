@@ -29,9 +29,6 @@ export const whiteboardNamespace =
 /** Display name used by the shared login card + last-identity hint. */
 export const APP_NAME = "Whiteboard";
 
-/** Amber — reserved for whiteboard, unused by sibling prototypes (PRD §12). */
-export const ACCENT = "#d97706";
-
 /**
  * App-owned feedback inbox (a public-append container the app developer
  * controls). All feedback — from any user, logged in or not — is POSTed here,

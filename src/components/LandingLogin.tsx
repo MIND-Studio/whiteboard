@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MindLoginCard, writeLastIdentity } from "@mind-studio/core";
 import { useSession } from "@/lib/solid/session";
-import { oidcIssuer, APP_NAME, ACCENT } from "@/lib/config";
+import { oidcIssuer, APP_NAME } from "@/lib/config";
 
 /**
  * Client-side sign-in surface for the landing page. Renders the shared
- * MindLoginCard (amber accent), and once a session exists routes on to the
+ * MindLoginCard on the Mind brand, and once a session exists routes on to the
  * boards list. Kept as a "use client" island so the page.tsx RSC stays clean.
  */
 export function LandingLogin() {
@@ -30,7 +30,6 @@ export function LandingLogin() {
       <MindLoginCard
         appName={APP_NAME}
         defaultIssuer={oidcIssuer}
-        accent={ACCENT}
         onLogin={async ({ issuer }) => {
           await signIn(issuer);
         }}
