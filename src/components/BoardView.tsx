@@ -15,7 +15,7 @@ import { ensureBoardsContainer, readFileBlob } from "@/lib/solid/pod-fs";
 import type { SubscriptionHandle } from "@/lib/solid/notifications";
 import { startBoardWakeup } from "@/lib/whiteboard/wake-up";
 import { rememberSignedOutPath } from "@/lib/solid/auth";
-import { oidcIssuer, APP_NAME, ACCENT } from "@/lib/config";
+import { oidcIssuer, APP_NAME } from "@/lib/config";
 import {
   createWhiteboardDoc,
   type WhiteboardDoc,
@@ -318,7 +318,6 @@ export function BoardView({ id }: { id: string }) {
           <MindLoginCard
             appName={APP_NAME}
             defaultIssuer={oidcIssuer}
-            accent={ACCENT}
             onLogin={async ({ issuer }) => {
               await signIn(issuer);
             }}
