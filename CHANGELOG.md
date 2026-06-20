@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/MIND-Studio/whiteboard/compare/v0.1.5...v0.2.0) (2026-06-20)
+
+
+### Features
+
+* adopt ui ^0.4.0 fonts + core ^0.7.0 login accent ([#7](https://github.com/MIND-Studio/whiteboard/issues/7)) ([597d9df](https://github.com/MIND-Studio/whiteboard/commit/597d9df514366d04394a2ce1483e3bc61641aace))
+
 ## [0.1.5](https://github.com/MIND-Studio/whiteboard/compare/v0.1.4...v0.1.5) (2026-06-11)
 
 
