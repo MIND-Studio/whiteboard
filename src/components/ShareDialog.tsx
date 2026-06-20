@@ -1,22 +1,22 @@
 "use client";
 
-import { useState } from "react";
 import {
+  Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
   Input,
   Label,
-  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@mind-studio/ui";
-import { Globe, UserPlus, Copy, Check } from "lucide-react";
-import { setBoardPublicAccess, setBoardAgentAccess } from "@/lib/solid/access";
+import { Check, Copy, Globe, UserPlus } from "lucide-react";
+import { useState } from "react";
+import { setBoardAgentAccess, setBoardPublicAccess } from "@/lib/solid/access";
 import { composeShareLink } from "@/lib/whiteboard/share-link";
 
 /**
@@ -65,9 +65,7 @@ export function ShareDialog({
   const [copied, setCopied] = useState(false);
 
   function appOrigin(): string {
-    return (
-      origin ?? (typeof window !== "undefined" ? window.location.origin : "")
-    );
+    return origin ?? (typeof window !== "undefined" ? window.location.origin : "");
   }
 
   function buildLink(): string {
@@ -137,9 +135,8 @@ export function ShareDialog({
         <DialogHeader>
           <DialogTitle>Share this board</DialogTitle>
           <DialogDescription>
-            The link carries an encryption key in its fragment — anyone you send
-            it to can open and decrypt the board. The relay and the pod only ever
-            see ciphertext.
+            The link carries an encryption key in its fragment — anyone you send it to can open and
+            decrypt the board. The relay and the pod only ever see ciphertext.
           </DialogDescription>
         </DialogHeader>
 
@@ -176,8 +173,8 @@ export function ShareDialog({
                 spellCheck={false}
               />
               <p className="text-xs text-muted-foreground">
-                Only this person’s pod can read and edit the board. They sign in
-                with their own pod (silent SSO if already in a Mind app).
+                Only this person’s pod can read and edit the board. They sign in with their own pod
+                (silent SSO if already in a Mind app).
               </p>
             </div>
             <Button
@@ -206,18 +203,11 @@ export function ShareDialog({
                 value={link}
                 onFocus={(e) => e.currentTarget.select()}
               />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => copy(link)}
-                aria-label="Copy link"
-              >
+              <Button variant="outline" size="sm" onClick={() => copy(link)} aria-label="Copy link">
                 {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
               </Button>
             </div>
-            {copied ? (
-              <p className="text-xs text-emerald-600">Copied to clipboard.</p>
-            ) : null}
+            {copied ? <p className="text-xs text-emerald-600">Copied to clipboard.</p> : null}
           </div>
         ) : null}
       </DialogContent>

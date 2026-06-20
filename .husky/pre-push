@@ -1,0 +1,6 @@
+# Fast confidence gate before code leaves this machine — mirrors CI's
+# correctness checks. The slow `next build` is left to CI.
+# Bypass in a pinch with `git push --no-verify`.
+npm run lint || exit 1
+npm run typecheck || exit 1
+npm run test || exit 1

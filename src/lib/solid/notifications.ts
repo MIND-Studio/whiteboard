@@ -19,11 +19,7 @@ import { session } from "./session";
  * 2-second polling fallback if the WS can't be established or drops.
  */
 
-export type SubscriptionState =
-  | "connecting"
-  | "connected"
-  | "polling"
-  | "error";
+export type SubscriptionState = "connecting" | "connected" | "polling" | "error";
 
 export type SubscriptionHandle = {
   disconnect: () => void;
@@ -45,14 +41,14 @@ function authedFetch(): typeof fetch {
  */
 async function discoverSubscriptionEndpoint(
   topicUrl: string,
-  fetch: typeof globalThis.fetch
+  fetch: typeof globalThis.fetch,
 ): Promise<string> {
   const fallback = `${new URL(topicUrl).origin}/.notifications/WebSocketChannel2023/`;
   try {
     const head = await fetch(topicUrl, { method: "HEAD" });
     const link = head.headers.get("link") ?? "";
     const storageDescMatch = link.match(
-      /<([^>]+)>\s*;\s*rel="http:\/\/www\.w3\.org\/ns\/solid\/terms#storageDescription"/
+      /<([^>]+)>\s*;\s*rel="http:\/\/www\.w3\.org\/ns\/solid\/terms#storageDescription"/,
     );
     if (!storageDescMatch?.[1]) return fallback;
     const descUrl = storageDescMatch[1];
@@ -62,14 +58,11 @@ async function discoverSubscriptionEndpoint(
     if (!descRes.ok) return fallback;
     const desc = (await descRes.json()) as Array<Record<string, unknown>>;
     for (const node of desc) {
-      const channelType = (node[
-        "http://www.w3.org/ns/solid/notifications#channelType"
-      ] ?? []) as Array<{ "@id"?: string }>;
+      const channelType = (node["http://www.w3.org/ns/solid/notifications#channelType"] ??
+        []) as Array<{ "@id"?: string }>;
       if (
         channelType.some(
-          (c) =>
-            c["@id"] ===
-            "http://www.w3.org/ns/solid/notifications#WebSocketChannel2023"
+          (c) => c["@id"] === "http://www.w3.org/ns/solid/notifications#WebSocketChannel2023",
         )
       ) {
         const id = node["@id"];
@@ -92,7 +85,7 @@ async function openSubscription(
   topicUrl: string,
   fetch: typeof globalThis.fetch,
   onMessage: () => void,
-  onClose: () => void
+  onClose: () => void,
 ): Promise<{ close: () => void }> {
   const subscribeUrl = await discoverSubscriptionEndpoint(topicUrl, fetch);
 
@@ -107,9 +100,7 @@ async function openSubscription(
   });
   if (!subRes.ok) {
     const body = await subRes.text();
-    throw new Error(
-      `subscription POST failed (${subRes.status}): ${body.slice(0, 200)}`
-    );
+    throw new Error(`subscription POST failed (${subRes.status}): ${body.slice(0, 200)}`);
   }
   const subBody = (await subRes.json()) as { receiveFrom?: string };
   if (!subBody.receiveFrom) {
@@ -147,7 +138,7 @@ async function openSubscription(
 export async function subscribeToBoard(
   topicUrl: string,
   onChange: () => void,
-  onState?: (s: SubscriptionState) => void
+  onState?: (s: SubscriptionState) => void,
 ): Promise<SubscriptionHandle> {
   const fetch = authedFetch();
   onState?.("connecting");
@@ -176,7 +167,7 @@ export async function subscribeToBoard(
       () => onChange(),
       () => {
         if (!disposed) startPolling();
-      }
+      },
     );
     onState?.("connected");
     // Refresh once after connect to catch a write that landed between the

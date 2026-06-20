@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@mind-studio/ui";
-import { Plus, PencilRuler, Clock, LogOut } from "lucide-react";
-import { useSession } from "@/lib/solid/session";
-import { listBoards, ensureBoardsContainer, type BoardSummary } from "@/lib/solid/pod-fs";
+import { Clock, LogOut, PencilRuler, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { rememberSignedOutPath } from "@/lib/solid/auth";
+import { type BoardSummary, ensureBoardsContainer, listBoards } from "@/lib/solid/pod-fs";
+import { useSession } from "@/lib/solid/session";
 
 /**
  * "My boards" — the real pod-backed list (PRD §6). Reads the signed-in user's
@@ -77,8 +77,7 @@ export function BoardsList() {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Your boards</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Every board lives in your pod. Only you can see it until you share a
-            link.
+            Every board lives in your pod. Only you can see it until you share a link.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -86,12 +85,7 @@ export function BoardsList() {
             <Plus className="size-4" />
             {creating ? "Creating…" : "New board"}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => signOut()}
-            aria-label="Sign out"
-          >
+          <Button variant="outline" size="sm" onClick={() => signOut()} aria-label="Sign out">
             <LogOut className="size-4" />
             Sign out
           </Button>
@@ -121,13 +115,7 @@ export function BoardsList() {
   );
 }
 
-function BoardCard({
-  board,
-  onOpen,
-}: {
-  board: BoardSummary;
-  onOpen: () => void;
-}) {
+function BoardCard({ board, onOpen }: { board: BoardSummary; onOpen: () => void }) {
   return (
     <button
       type="button"
@@ -146,13 +134,7 @@ function BoardCard({
   );
 }
 
-function EmptyState({
-  onCreate,
-  creating,
-}: {
-  onCreate: () => void;
-  creating: boolean;
-}) {
+function EmptyState({ onCreate, creating }: { onCreate: () => void; creating: boolean }) {
   return (
     <div className="mt-10 flex flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-16 text-center">
       <span className="flex size-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
@@ -160,8 +142,8 @@ function EmptyState({
       </span>
       <h2 className="mt-4 text-lg font-medium">No boards yet</h2>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-        Create your first board — it saves straight to your pod, and you can
-        share a live link whenever you’re ready.
+        Create your first board — it saves straight to your pod, and you can share a live link
+        whenever you’re ready.
       </p>
       <Button className="mt-6" onClick={onCreate} disabled={creating}>
         <Plus className="size-4" />

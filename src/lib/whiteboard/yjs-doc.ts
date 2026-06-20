@@ -1,9 +1,9 @@
 "use client";
 
-import * as Y from "yjs";
-import { WebsocketProvider } from "y-websocket";
 import { IndexeddbPersistence } from "y-indexeddb";
 import type { Awareness } from "y-protocols/awareness";
+import { WebsocketProvider } from "y-websocket";
+import * as Y from "yjs";
 import { relayUrl } from "@/lib/config";
 
 /**
@@ -59,10 +59,7 @@ export type WhiteboardDoc = {
  * @param boardId  relay room id + pod path segment.
  * @param opts.relay  override the relay base URL (defaults to config.relayUrl).
  */
-export function createWhiteboardDoc(
-  boardId: string,
-  opts: { relay?: string } = {},
-): WhiteboardDoc {
+export function createWhiteboardDoc(boardId: string, opts: { relay?: string } = {}): WhiteboardDoc {
   const doc = new Y.Doc();
   const elements = doc.getMap(ELEMENTS_MAP);
 

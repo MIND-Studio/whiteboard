@@ -1,9 +1,9 @@
 "use client";
 
-import * as Y from "yjs";
+import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
 import type { CaptureUpdateActionType } from "@excalidraw/excalidraw/store";
 import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
-import type { ExcalidrawElement } from "@excalidraw/excalidraw/element/types";
+import * as Y from "yjs";
 import type { WhiteboardDoc } from "./yjs-doc";
 
 /**
@@ -194,10 +194,7 @@ export function bindExcalidrawToDoc(
     // never see a missing required field. localElements = current canvas
     // elements, so restore can preserve any local-only ordering/version info
     // while backfilling defaults.
-    const elements = restoreElements(
-      merged,
-      api.getSceneElementsIncludingDeleted(),
-    );
+    const elements = restoreElements(merged, api.getSceneElementsIncludingDeleted());
 
     api.updateScene({
       elements,

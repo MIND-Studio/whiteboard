@@ -1,7 +1,7 @@
 "use client";
 
 import { universalAccess } from "@inrupt/solid-client";
-import { session, boardBinUrl, boardMetaUrl, boardsContainerUrl } from "./session";
+import { boardBinUrl, boardMetaUrl, boardsContainerUrl, session } from "./session";
 
 /**
  * Sharing for a board (W2). We use the Inrupt **Universal Access** API
@@ -46,9 +46,7 @@ function boardTargets(id: string): [string, string, string] {
 
 // ── Public tier ────────────────────────────────────────────────────────────
 
-export async function getPublicAccess(
-  resourceUrl: string
-): Promise<AccessFlags | null> {
+export async function getPublicAccess(resourceUrl: string): Promise<AccessFlags | null> {
   try {
     const access = await universalAccess.getPublicAccess(resourceUrl, {
       fetch: authedFetch(),
@@ -60,15 +58,8 @@ export async function getPublicAccess(
 }
 
 /** Set public read on a single resource. */
-export async function setPublicRead(
-  resourceUrl: string,
-  read: boolean
-): Promise<void> {
-  await universalAccess.setPublicAccess(
-    resourceUrl,
-    { read },
-    { fetch: authedFetch() }
-  );
+export async function setPublicRead(resourceUrl: string, read: boolean): Promise<void> {
+  await universalAccess.setPublicAccess(resourceUrl, { read }, { fetch: authedFetch() });
 }
 
 /**
@@ -76,16 +67,9 @@ export async function setPublicRead(
  * fragment). Grants/revokes public `read` on the `.bin`, `.meta.ttl`, AND the
  * containing folder. `read:false` turns the board private again.
  */
-export async function setBoardPublicAccess(
-  id: string,
-  read: boolean
-): Promise<void> {
+export async function setBoardPublicAccess(id: string, read: boolean): Promise<void> {
   for (const url of boardTargets(id)) {
-    await universalAccess.setPublicAccess(
-      url,
-      { read },
-      { fetch: authedFetch() }
-    );
+    await universalAccess.setPublicAccess(url, { read }, { fetch: authedFetch() });
   }
 }
 
@@ -93,7 +77,7 @@ export async function setBoardPublicAccess(
 
 export async function getAgentAccess(
   resourceUrl: string,
-  webId: string
+  webId: string,
 ): Promise<AccessFlags | null> {
   try {
     // Signature: (resourceUrl, webId, options) — argument order is webId BEFORE
@@ -112,7 +96,7 @@ export async function getAgentAccess(
 export async function setAgentAccess(
   resourceUrl: string,
   webId: string,
-  flags: AccessFlags
+  flags: AccessFlags,
 ): Promise<void> {
   // Signature: (resourceUrl, webId, access, options). webId comes BEFORE access
   // — flipping them makes the SDK throw a confusing "Expected a valid URL".
@@ -131,12 +115,10 @@ export async function setAgentAccess(
 export async function setBoardAgentAccess(
   id: string,
   webId: string,
-  flags: { read: boolean; write?: boolean }
+  flags: { read: boolean; write?: boolean },
 ): Promise<void> {
   if (!isLikelyWebId(webId)) {
-    throw new Error(
-      "Not a WebID URL (expected http(s)://…/profile/card#me or similar)"
-    );
+    throw new Error("Not a WebID URL (expected http(s)://…/profile/card#me or similar)");
   }
   const access: AccessFlags = {
     read: flags.read,

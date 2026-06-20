@@ -1,8 +1,12 @@
 "use client";
 
-import { subscribeToBoard, type SubscriptionHandle, type SubscriptionState } from "@/lib/solid/notifications";
-import { fetchDecryptedSnapshot } from "@/lib/whiteboard/snapshot";
+import {
+  type SubscriptionHandle,
+  type SubscriptionState,
+  subscribeToBoard,
+} from "@/lib/solid/notifications";
 import type { SnapshotKey } from "@/lib/whiteboard/crypto";
+import { fetchDecryptedSnapshot } from "@/lib/whiteboard/snapshot";
 import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
 
 /**
@@ -56,9 +60,7 @@ export type BoardWakeupOptions = {
  *   const wake = await startBoardWakeup({ board, snapshotUrl, key });
  *   // …on unmount: wake.disconnect();
  */
-export async function startBoardWakeup(
-  opts: BoardWakeupOptions
-): Promise<SubscriptionHandle> {
+export async function startBoardWakeup(opts: BoardWakeupOptions): Promise<SubscriptionHandle> {
   const { board, snapshotUrl, key, onState } = opts;
   let disposed = false;
 

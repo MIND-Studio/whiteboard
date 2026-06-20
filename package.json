@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start -p 3110",
     "relay": "tsx relay/server.ts",
-    "seed:demo": "tsx scripts/seed-demo.ts"
+    "seed:demo": "tsx scripts/seed-demo.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "vitest run --passWithNoTests",
+    "prepare": "husky"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.18.0",
@@ -26,6 +32,7 @@
     "yjs": "^13.6.20"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -33,7 +40,13 @@
     "@types/ws": "^8.5.13",
     "tailwindcss": "^4",
     "tsx": "^4.22.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "typescript": "^5",
+    "vitest": "^4.1.9",
     "ws": "^8.18.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc}": "biome check --write --no-errors-on-unmatched"
   }
 }
