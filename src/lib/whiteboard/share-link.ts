@@ -68,9 +68,7 @@ export function parseShareLink(href: string): ShareLinkParts | null {
   const segments = url.pathname.split("/").filter(Boolean);
   const boardIdx = segments.indexOf("board");
   const rawBoardId =
-    boardIdx >= 0 && segments.length > boardIdx + 1
-      ? segments[boardIdx + 1]
-      : undefined;
+    boardIdx >= 0 && segments.length > boardIdx + 1 ? segments[boardIdx + 1] : undefined;
   if (!rawBoardId) return null;
   const boardId = decodeURIComponent(rawBoardId);
 

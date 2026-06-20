@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { Badge, Button } from "@mind-studio/ui";
-import { ArrowLeft, Share2, Cloud, CloudOff, Wifi, WifiOff } from "lucide-react";
-import type { ConnectionStatus } from "@/lib/whiteboard/yjs-doc";
-import type { SnapshotStatus } from "@/lib/whiteboard/snapshot";
+import { ArrowLeft, Cloud, CloudOff, Share2, Wifi, WifiOff } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { CollaboratorsBar } from "@/components/CollaboratorsBar";
 import { ShareDialog } from "@/components/ShareDialog";
-import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
+import type { SnapshotStatus } from "@/lib/whiteboard/snapshot";
+import type { ConnectionStatus, WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
 
 /**
  * The board chrome (the bar above the canvas). Carries:
@@ -70,11 +69,7 @@ export function Toolbar({
 
       {isOwner ? (
         <>
-          <Button
-            size="sm"
-            onClick={() => setShareOpen(true)}
-            data-testid="share-button"
-          >
+          <Button size="sm" onClick={() => setShareOpen(true)} data-testid="share-button">
             <Share2 className="size-4" /> Share
           </Button>
           <ShareDialog

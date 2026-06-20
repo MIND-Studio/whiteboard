@@ -16,9 +16,7 @@ export default function Landing() {
         >
           W
         </span>
-        <span className="text-lg font-semibold tracking-tight">
-          Mind Whiteboard
-        </span>
+        <span className="text-lg font-semibold tracking-tight">Mind Whiteboard</span>
       </header>
 
       <section className="grid flex-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
@@ -32,9 +30,9 @@ export default function Landing() {
             <span className="text-primary">Your board, in your pod.</span>
           </h1>
           <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground sm:text-lg">
-            Freehand-draw on an infinite canvas, share a link, and collaborate
-            live with cursors and presence. The durable board lives in your
-            Solid Pod — the live relay never persists a thing.
+            Freehand-draw on an infinite canvas, share a link, and collaborate live with cursors and
+            presence. The durable board lives in your Solid Pod — the live relay never persists a
+            thing.
           </p>
 
           <div className="mt-8 max-w-md">

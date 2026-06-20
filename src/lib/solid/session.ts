@@ -1,14 +1,10 @@
 "use client";
 
+import { login, logout, type Session } from "@inrupt/solid-client-authn-browser";
 import { useEffect, useState } from "react";
-import {
-  login,
-  logout,
-  type Session,
-} from "@inrupt/solid-client-authn-browser";
-import { APP_NAME, boardsRootFor, boardBinUrlFor, boardMetaUrlFor } from "@/lib/config";
-import { solid, DEFAULT_ISSUER } from "./client";
+import { APP_NAME, boardBinUrlFor, boardMetaUrlFor, boardsRootFor } from "@/lib/config";
 import { ensureSession } from "./auth";
+import { DEFAULT_ISSUER, solid } from "./client";
 
 /**
  * Session + issuer memory now live in the shared {@link solid} client (see
@@ -125,10 +121,7 @@ export function useSession(): {
     rememberIssuer(issuer);
     await login({
       oidcIssuer: issuer,
-      redirectUrl:
-        typeof window !== "undefined"
-          ? `${window.location.origin}/login/callback`
-          : "",
+      redirectUrl: typeof window !== "undefined" ? `${window.location.origin}/login/callback` : "",
       clientName: APP_NAME,
     });
   }

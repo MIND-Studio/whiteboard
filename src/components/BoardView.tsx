@@ -1,46 +1,33 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { MindLoginCard, writeLastIdentity } from "@mind-studio/core";
+import { Button, Spinner } from "@mind-studio/ui";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { MindLoginCard, writeLastIdentity } from "@mind-studio/core";
-import { Button, Spinner } from "@mind-studio/ui";
-import {
-  useSession,
-  boardBinUrl,
-  boardMetaUrl,
-} from "@/lib/solid/session";
-import { ensureBoardsContainer, readFileBlob } from "@/lib/solid/pod-fs";
-import type { SubscriptionHandle } from "@/lib/solid/notifications";
-import { startBoardWakeup } from "@/lib/whiteboard/wake-up";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Toolbar } from "@/components/Toolbar";
+import { APP_NAME, oidcIssuer } from "@/lib/config";
 import { rememberSignedOutPath } from "@/lib/solid/auth";
-import { oidcIssuer, APP_NAME } from "@/lib/config";
-import {
-  createWhiteboardDoc,
-  type WhiteboardDoc,
-  type ConnectionStatus,
-} from "@/lib/whiteboard/yjs-doc";
+import type { SubscriptionHandle } from "@/lib/solid/notifications";
+import { ensureBoardsContainer, readFileBlob } from "@/lib/solid/pod-fs";
+import { boardBinUrl, boardMetaUrl, useSession } from "@/lib/solid/session";
+import { exportKey, generateKey, importKey, type SnapshotKey } from "@/lib/whiteboard/crypto";
 import { seedDocFromUpdate } from "@/lib/whiteboard/excalidraw-bridge";
+import { colorForClient, nameFromWebId, type PresenceUser } from "@/lib/whiteboard/presence";
+import { keyFromLocationHash } from "@/lib/whiteboard/share-link";
 import {
   createSnapshotWriter,
   fetchDecryptedSnapshot,
-  type SnapshotWriter,
   type SnapshotStatus,
+  type SnapshotWriter,
 } from "@/lib/whiteboard/snapshot";
+import { startBoardWakeup } from "@/lib/whiteboard/wake-up";
 import {
-  generateKey,
-  importKey,
-  exportKey,
-  type SnapshotKey,
-} from "@/lib/whiteboard/crypto";
-import { keyFromLocationHash } from "@/lib/whiteboard/share-link";
-import {
-  nameFromWebId,
-  colorForClient,
-  type PresenceUser,
-} from "@/lib/whiteboard/presence";
-import { Toolbar } from "@/components/Toolbar";
+  type ConnectionStatus,
+  createWhiteboardDoc,
+  type WhiteboardDoc,
+} from "@/lib/whiteboard/yjs-doc";
 
 // Canvas is dynamically imported with ssr:false because Excalidraw is browser-
 // only (touches window at module load) and has no SSR path. Even though BoardView
@@ -49,17 +36,14 @@ import { Toolbar } from "@/components/Toolbar";
 // component) behind one ssr:false boundary keeps the whole Excalidraw subtree out
 // of the server render. (The bridge no longer drags Excalidraw's runtime in — it
 // uses type-only imports — but the component itself still must not SSR.)
-const Canvas = dynamic(
-  () => import("@/components/Canvas").then((m) => m.Canvas),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="grid h-full w-full place-items-center text-sm text-muted-foreground">
-        Loading canvas…
-      </div>
-    ),
-  },
-);
+const Canvas = dynamic(() => import("@/components/Canvas").then((m) => m.Canvas), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full w-full place-items-center text-sm text-muted-foreground">
+      Loading canvas…
+    </div>
+  ),
+});
 
 /**
  * Live board view (W1 draw + W3 collaborate). The server page passes the route
@@ -122,10 +106,7 @@ export function BoardView({ id }: { id: string }) {
 
   // The `#k=` fragment is only readable on the client and never sent to a server.
   const fragmentKey = useMemo(
-    () =>
-      typeof window === "undefined"
-        ? null
-        : keyFromLocationHash(window.location.hash),
+    () => (typeof window === "undefined" ? null : keyFromLocationHash(window.location.hash)),
     [],
   );
   const isFriend = Boolean(podParam && fragmentKey);
@@ -265,8 +246,7 @@ export function BoardView({ id }: { id: string }) {
           title: defaultTitle(id),
           snapshotUrl,
           exportedKey,
-          origin:
-            typeof window !== "undefined" ? window.location.origin : "",
+          origin: typeof window !== "undefined" ? window.location.origin : "",
         });
       } catch (err) {
         if (!cancelled) {
@@ -334,10 +314,10 @@ export function BoardView({ id }: { id: string }) {
           This board needs its link
         </p>
         <p className="max-w-md text-center text-sm text-muted-foreground">
-          This board is encrypted, and its key lives in the share link — not in
-          your pod. Open it from the link you created when you shared it (the part
-          after <code className="font-mono">#k=</code> is the key). Creating a new
-          board instead won’t touch this one.
+          This board is encrypted, and its key lives in the share link — not in your pod. Open it
+          from the link you created when you shared it (the part after{" "}
+          <code className="font-mono">#k=</code> is the key). Creating a new board instead won’t
+          touch this one.
         </p>
         <Button asChild variant="outline" size="sm">
           <Link href="/boards">Back to boards</Link>
@@ -352,9 +332,7 @@ export function BoardView({ id }: { id: string }) {
         <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-destructive">
           Could not open board
         </p>
-        <p className="max-w-md break-all text-center font-mono text-sm">
-          {phase.message}
-        </p>
+        <p className="max-w-md break-all text-center font-mono text-sm">{phase.message}</p>
         <Button variant="outline" size="sm" onClick={() => location.reload()}>
           Retry
         </Button>

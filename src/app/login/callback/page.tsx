@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { completeLoginRedirect } from "@/lib/solid/auth";
-import { consumeReturnTo } from "@/lib/solid/auth";
+import { useEffect } from "react";
+import { completeLoginRedirect, consumeReturnTo } from "@/lib/solid/auth";
 
 /**
  * OIDC redirect landing. Consumes the authorization code via the single-flight

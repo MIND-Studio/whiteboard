@@ -64,9 +64,7 @@ export function nameFromWebId(webId: string | null | undefined): string {
     const noFragment = webId.split("#")[0];
     const segments = noFragment.split("/").filter(Boolean);
     // Drop a trailing profile/card so we land on the pod segment (the username).
-    const meaningful = segments.filter(
-      (s) => s !== "profile" && s !== "card" && !s.includes(":"),
-    );
+    const meaningful = segments.filter((s) => s !== "profile" && s !== "card" && !s.includes(":"));
     return meaningful[0] ?? "Guest";
   } catch {
     return "Guest";
@@ -90,8 +88,7 @@ export function asPresenceState(raw: unknown): PresenceState | null {
     return null;
   }
   const cursor = r.cursor as Record<string, unknown> | undefined;
-  const hasCursor =
-    cursor && typeof cursor.x === "number" && typeof cursor.y === "number";
+  const hasCursor = cursor && typeof cursor.x === "number" && typeof cursor.y === "number";
   return {
     user: { name: user.name, color: user.color },
     cursor: hasCursor ? { x: cursor!.x as number, y: cursor!.y as number } : undefined,

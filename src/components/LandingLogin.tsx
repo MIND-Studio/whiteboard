@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { MindLoginCard, writeLastIdentity } from "@mind-studio/core";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { APP_NAME, oidcIssuer } from "@/lib/config";
 import { useSession } from "@/lib/solid/session";
-import { oidcIssuer, APP_NAME } from "@/lib/config";
 
 /**
  * Client-side sign-in surface for the landing page. Renders the shared

@@ -14,11 +14,7 @@ import { BoardView } from "@/components/BoardView";
  * Wrapped in <Suspense> because BoardView uses `useSearchParams()`, which Next
  * requires to be inside a Suspense boundary.
  */
-export default async function BoardPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function BoardPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   return (
     <Suspense fallback={null}>

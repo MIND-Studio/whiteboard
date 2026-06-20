@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
-import { Fraunces, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@mind-studio/ui";
 import { mind } from "@mind-studio/ui/themes";
+import type { Metadata } from "next";
+import { Fraunces, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { FeedbackLauncher } from "@/components/FeedbackLauncher";
 
@@ -17,9 +17,7 @@ export const metadata: Metadata = {
     "A privacy-first collaborative whiteboard built on Solid Pods. Draw, share a link, live-collaborate — the durable board lives in your pod, the relay never persists anything.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     // data-mind-theme selects the Mind brand; next-themes toggles `.dark` on
     // <html> at runtime, so suppressHydrationWarning covers the mismatch.

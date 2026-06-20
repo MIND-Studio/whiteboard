@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
-import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
+import { useEffect, useRef, useState } from "react";
 import { asPresenceState, type PresenceState } from "@/lib/whiteboard/presence";
+import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
 
 /**
  * Live cursors overlay (W3 "see each other"). Renders one labelled cursor per

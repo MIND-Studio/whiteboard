@@ -1,7 +1,7 @@
 "use client";
 
 import { createSolidClient } from "@mind-studio/core/solid";
-import { oidcIssuer, APP_NAME } from "@/lib/config";
+import { APP_NAME, oidcIssuer } from "@/lib/config";
 
 /**
  * The Solid issuer used when the user hasn't picked one. Read from the app's

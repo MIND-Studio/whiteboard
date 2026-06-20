@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
@@ -10,12 +9,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@mind-studio/ui";
+import { useEffect, useState } from "react";
+import { asPresenceState, initialsFor, type PresenceState } from "@/lib/whiteboard/presence";
 import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
-import {
-  asPresenceState,
-  initialsFor,
-  type PresenceState,
-} from "@/lib/whiteboard/presence";
 
 /**
  * Who's here right now (W3 presence). Renders an avatar per peer present in

@@ -1,9 +1,9 @@
 "use client";
 
 import * as Y from "yjs";
-import { writeFileBlob, writeFileText, readFileBlob } from "@/lib/solid/pod-fs";
+import { readFileBlob, writeFileBlob, writeFileText } from "@/lib/solid/pod-fs";
 import { session } from "@/lib/solid/session";
-import { encryptBytes, decryptBytes, type SnapshotKey } from "./crypto";
+import { decryptBytes, encryptBytes, type SnapshotKey } from "./crypto";
 import type { WhiteboardDoc } from "./yjs-doc";
 
 /**
@@ -68,10 +68,7 @@ export type SnapshotWriter = {
  * Encode + encrypt the current doc state. Exposed for tests and for a one-shot
  * "save now" path that doesn't need the debounce machinery.
  */
-export async function encodeEncryptedSnapshot(
-  doc: Y.Doc,
-  key: SnapshotKey,
-): Promise<Blob> {
+export async function encodeEncryptedSnapshot(doc: Y.Doc, key: SnapshotKey): Promise<Blob> {
   const update = Y.encodeStateAsUpdate(doc);
   const ciphertext = await encryptBytes(key, update);
   return new Blob([ciphertext as BlobPart], { type: BIN_CONTENT_TYPE });
@@ -111,9 +108,7 @@ export function buildMetaTurtle(
   modifiedIso: string,
 ): string {
   const created = meta.created ?? modifiedIso;
-  const creatorLine = creatorWebId
-    ? `    dcterms:creator <${creatorWebId}> ;\n`
-    : "";
+  const creatorLine = creatorWebId ? `    dcterms:creator <${creatorWebId}> ;\n` : "";
   return `@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix as: <https://www.w3.org/ns/activitystreams#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .

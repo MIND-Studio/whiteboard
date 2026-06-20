@@ -11,12 +11,10 @@
  * `NEXT_PUBLIC_OIDC_ISSUER` alias was dropped before the first prod build so the
  * build-time-inlined name can't drift across images (see docs/DEPLOYMENT.md §A2).
  */
-export const oidcIssuer =
-  process.env.NEXT_PUBLIC_SOLID_ISSUER ?? "https://pods.mindpods.org/";
+export const oidcIssuer = process.env.NEXT_PUBLIC_SOLID_ISSUER ?? "https://pods.mindpods.org/";
 
 /** Live-collaboration relay (ephemeral y-websocket). CSS=3111, app=3110, relay=3112. */
-export const relayUrl =
-  process.env.NEXT_PUBLIC_RELAY_URL ?? "ws://localhost:3112";
+export const relayUrl = process.env.NEXT_PUBLIC_RELAY_URL ?? "ws://localhost:3112";
 
 /**
  * The namespace mind-whiteboard claims under each user pod. Boards live under
@@ -37,8 +35,7 @@ export const APP_NAME = "Whiteboard";
  * `@mind-studio/core/feedback`.
  */
 export const feedbackInbox =
-  process.env.NEXT_PUBLIC_FEEDBACK_INBOX ??
-  `${ensureSlash(oidcIssuer)}alice/whiteboard-feedback/`;
+  process.env.NEXT_PUBLIC_FEEDBACK_INBOX ?? `${ensureSlash(oidcIssuer)}alice/whiteboard-feedback/`;
 
 /**
  * Board-path helpers — the single place that knows the on-pod layout. Every

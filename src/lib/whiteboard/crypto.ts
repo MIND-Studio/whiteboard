@@ -81,10 +81,7 @@ export async function importKey(b64url: string): Promise<SnapshotKey> {
  * `IV || ciphertext` as a single Uint8Array, ready to `overwriteFile` as the
  * `.bin` resource.
  */
-export async function encryptBytes(
-  key: SnapshotKey,
-  plaintext: Uint8Array,
-): Promise<Uint8Array> {
+export async function encryptBytes(key: SnapshotKey, plaintext: Uint8Array): Promise<Uint8Array> {
   const iv = crypto.getRandomValues(new Uint8Array(IV_LEN));
   const ciphertext = new Uint8Array(
     await crypto.subtle.encrypt(

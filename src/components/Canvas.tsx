@@ -1,16 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
 import "@excalidraw/excalidraw/index.css";
 import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
-import {
-  bindExcalidrawToDoc,
-  type BridgeHandle,
-} from "@/lib/whiteboard/excalidraw-bridge";
-import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
-import type { PresenceUser } from "@/lib/whiteboard/presence";
 import { PresenceCursors } from "@/components/PresenceCursors";
+import { type BridgeHandle, bindExcalidrawToDoc } from "@/lib/whiteboard/excalidraw-bridge";
+import type { PresenceUser } from "@/lib/whiteboard/presence";
+import type { WhiteboardDoc } from "@/lib/whiteboard/yjs-doc";
 
 /**
  * The drawing surface (W1) + live-collab wiring (W3).
@@ -33,17 +30,14 @@ import { PresenceCursors } from "@/components/PresenceCursors";
  * write access still sees live edits but can't draw (PRD §4 public tier is read).
  */
 
-const Excalidraw = dynamic(
-  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
-  {
-    ssr: false,
-    loading: () => (
-      <div className="grid h-full w-full place-items-center text-sm text-muted-foreground">
-        Loading canvas…
-      </div>
-    ),
-  },
-);
+const Excalidraw = dynamic(async () => (await import("@excalidraw/excalidraw")).Excalidraw, {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full w-full place-items-center text-sm text-muted-foreground">
+      Loading canvas…
+    </div>
+  ),
+});
 
 export function Canvas({
   board,

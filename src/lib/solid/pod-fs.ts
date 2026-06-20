@@ -1,20 +1,20 @@
 "use client";
 
 import {
-  getSolidDataset,
-  getContainedResourceUrlAll,
-  getThing,
-  getDatetime,
-  getInteger,
-  getStringNoLocale,
-  deleteFile,
-  deleteContainer,
-  overwriteFile,
-  getFile,
   createContainerAt,
+  deleteContainer,
+  deleteFile,
+  getContainedResourceUrlAll,
+  getDatetime,
+  getFile,
+  getInteger,
+  getSolidDataset,
   getSourceUrl,
+  getStringNoLocale,
+  getThing,
+  overwriteFile,
 } from "@inrupt/solid-client";
-import { session, boardsContainerUrl } from "./session";
+import { boardsContainerUrl, session } from "./session";
 
 /**
  * POSIX-shaped wrappers around the Solid LDP HTTP API, ported from
@@ -74,10 +74,10 @@ export async function readdir(containerUrl: string): Promise<PodEntry[]> {
       const isContainer = url.endsWith("/");
       const thing = getThing(dataset, url);
       const modified = thing
-        ? getDatetime(thing, "http://purl.org/dc/terms/modified") ?? undefined
+        ? (getDatetime(thing, "http://purl.org/dc/terms/modified") ?? undefined)
         : undefined;
       const size = thing
-        ? getInteger(thing, "http://www.w3.org/ns/posix/stat#size") ?? undefined
+        ? (getInteger(thing, "http://www.w3.org/ns/posix/stat#size") ?? undefined)
         : undefined;
       return {
         url,
@@ -105,7 +105,7 @@ export async function readFileBlob(url: string): Promise<Blob> {
 export async function writeFileText(
   url: string,
   contents: string,
-  contentType = "text/plain"
+  contentType = "text/plain",
 ): Promise<void> {
   await overwriteFile(url, new Blob([contents], { type: contentType }), {
     contentType,
@@ -116,7 +116,7 @@ export async function writeFileText(
 export async function writeFileBlob(
   url: string,
   blob: Blob,
-  contentType?: string
+  contentType?: string,
 ): Promise<string> {
   const type = contentType ?? blob.type ?? "application/octet-stream";
   const result = await overwriteFile(url, blob, {
@@ -203,7 +203,7 @@ const DCTERMS_MODIFIED = "http://purl.org/dc/terms/modified";
  * meta still lists, titled by its id.
  */
 export async function readBoardMeta(
-  metaUrl: string
+  metaUrl: string,
 ): Promise<{ title: string | null; modified: Date | null }> {
   try {
     const dataset = await getSolidDataset(metaUrl, { fetch: noCacheFetch() });
@@ -253,19 +253,17 @@ export async function listBoards(root?: string): Promise<BoardSummary[]> {
   }
 
   const summaries = await Promise.all(
-    Array.from(ids.entries()).map(
-      async ([id, info]): Promise<BoardSummary> => {
-        const metaUrl = `${container}${id}.meta.ttl`;
-        const meta = await readBoardMeta(metaUrl);
-        return {
-          id,
-          binUrl: `${container}${id}.bin`,
-          metaUrl,
-          title: meta.title ?? id,
-          modified: meta.modified ?? info.binModified,
-        };
-      }
-    )
+    Array.from(ids.entries()).map(async ([id, info]): Promise<BoardSummary> => {
+      const metaUrl = `${container}${id}.meta.ttl`;
+      const meta = await readBoardMeta(metaUrl);
+      return {
+        id,
+        binUrl: `${container}${id}.bin`,
+        metaUrl,
+        title: meta.title ?? id,
+        modified: meta.modified ?? info.binModified,
+      };
+    }),
   );
 
   return summaries.sort((a, b) => {
