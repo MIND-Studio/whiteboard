@@ -11,8 +11,7 @@ export default function Landing() {
       <header className="flex items-center gap-2.5 py-7">
         <span
           aria-hidden
-          className="grid size-7 place-items-center rounded-lg text-sm font-bold text-white"
-          style={{ background: "#d97706" }}
+          className="grid size-7 place-items-center rounded-lg bg-primary text-sm font-bold text-primary-foreground"
         >
           W
         </span>
