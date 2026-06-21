@@ -122,7 +122,7 @@ function BoardCard({ board, onOpen }: { board: BoardSummary; onOpen: () => void 
       onClick={onOpen}
       className="group flex w-full flex-col items-start gap-3 rounded-xl border border-border bg-card p-5 text-left transition-colors hover:border-foreground/30 hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
-      <span className="flex size-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+      <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
         <PencilRuler className="size-5" />
       </span>
       <span className="line-clamp-2 font-medium">{board.title}</span>
@@ -137,7 +137,7 @@ function BoardCard({ board, onOpen }: { board: BoardSummary; onOpen: () => void 
 function EmptyState({ onCreate, creating }: { onCreate: () => void; creating: boolean }) {
   return (
     <div className="mt-10 flex flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-16 text-center">
-      <span className="flex size-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+      <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
         <PencilRuler className="size-6" />
       </span>
       <h2 className="mt-4 text-lg font-medium">No boards yet</h2>

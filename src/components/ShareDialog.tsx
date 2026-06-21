@@ -207,7 +207,7 @@ export function ShareDialog({
                 {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
               </Button>
             </div>
-            {copied ? <p className="text-xs text-emerald-600">Copied to clipboard.</p> : null}
+            {copied ? <p className="text-xs text-success">Copied to clipboard.</p> : null}
           </div>
         ) : null}
       </DialogContent>
