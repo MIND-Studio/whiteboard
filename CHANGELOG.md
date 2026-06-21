@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/MIND-Studio/whiteboard/compare/v0.2.0...v0.2.1) (2026-06-21)
+
+
+### Bug Fixes
+
+* **color:** fold accents to Mind Green, adopt 0.5.0 success token ([#10](https://github.com/MIND-Studio/whiteboard/issues/10)) ([ba2d357](https://github.com/MIND-Studio/whiteboard/commit/ba2d3574b636271beffc3789d5b93cdc6f91ef98))
+
 ## [0.2.0](https://github.com/MIND-Studio/whiteboard/compare/v0.1.5...v0.2.0) (2026-06-20)
 
 
